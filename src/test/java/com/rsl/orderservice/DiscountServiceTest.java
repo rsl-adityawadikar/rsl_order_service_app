@@ -1,14 +1,14 @@
 package com.rsl.orderservice;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.Test;
+
 import com.rsl.orderservice.model.Coupon;
 import com.rsl.orderservice.model.Customer;
 import com.rsl.orderservice.repository.CouponRepository;
 import com.rsl.orderservice.service.DiscountService;
 import com.rsl.orderservice.service.PricingService;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DiscountServiceTest {
 
@@ -27,11 +27,13 @@ class DiscountServiceTest {
     }
 
     @Test
-    void unknownCouponCodeIsIgnoredNotFatal() {
+    void unknownCouponCodeThrowsException() {
         DiscountService discounts = newDiscountService();
         Customer bob = new Customer("C-2", "Bob", false);
 
-        // A coupon code the customer mistyped must not bring the order down.
-        assertDoesNotThrow(() -> discounts.discountCents(1000, bob, "BLACKFRIDAY"));
+        // A coupon code the customer mistyped must fail the transaction explicitly.
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, 
+            () -> discounts.discountCents(1000, bob, "BLACKFRIDAY"));
+        assertEquals("Invalid coupon code: BLACKFRIDAY", exception.getMessage());
     }
 }

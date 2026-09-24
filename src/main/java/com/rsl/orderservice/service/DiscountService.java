@@ -1,11 +1,11 @@
 package com.rsl.orderservice.service;
 
+import java.util.logging.Logger;
+
 import com.rsl.orderservice.model.Coupon;
 import com.rsl.orderservice.model.Customer;
 import com.rsl.orderservice.repository.CouponRepository;
 import com.rsl.orderservice.util.AppLogger;
-
-import java.util.logging.Logger;
 
 /**
  * Decides the discount percentage that applies to an order, based on
@@ -49,6 +49,9 @@ public class DiscountService {
 
         if (couponCode != null && !couponCode.isBlank()) {
             Coupon coupon = couponRepository.findByCode(couponCode);
+            if (coupon == null) {
+                throw new IllegalArgumentException("Invalid coupon code: " + couponCode);
+            }
             log.info("Applying coupon '" + couponCode + "' -> " + coupon.getPercentOff() + "%");
             percent += coupon.getPercentOff();
         }
