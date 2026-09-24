@@ -284,3 +284,12 @@ These changes resolve the unhandled `NullPointerException` root cause when proce
 * **Overall Test Suite:** ✅ Verified. The full regression suite (`mvn test`) completed with `Tests run: 12, Failures: 0, Errors: 0, Skipped: 0` and a `BUILD SUCCESS`. No other functionalities were impacted.
 
 ---
+
+## 3. Final resolution
+
+### Before
+![Alt Text](Before.png)
+
+
+### After
+![Alt Text](After.png)
